@@ -1,0 +1,14 @@
+# Real student records stay on the machine; the app starts empty without it.
+students.json
+
+.venv/
+__pycache__/
+*.pyc
+app.log
+app.pid
+socat.log
+socat.pid
+cloudflared.log
+cloudflared.pid
+tunnel_ssh.log
+tunnel_ssh.pid

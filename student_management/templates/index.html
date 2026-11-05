@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | Student Management System{% endblock %}
+
+{% block content %}
+  <!-- Hero / page title -->
+  <section class="page-head">
+    <div>
+      <p class="eyebrow">Dashboard</p>
+      <h1>Welcome back 👋</h1>
+      <p class="page-subtitle">
+        A simple place to keep track of your students, their courses and their contact details.
+      </p>
+    </div>
+    <a href="{{ url_for('add_student') }}" class="btn btn-primary">+ Add new student</a>
+  </section>
+
+  <!-- Statistics cards -->
+  <section class="stats-grid">
+    <article class="stat-card stat-card-blue">
+      <div class="stat-icon">🎓</div>
+      <div>
+        <p class="stat-label">Total students</p>
+        <p class="stat-value">{{ total_students }}</p>
+        <p class="stat-note">records in students.json</p>
+      </div>
+    </article>
+
+    <article class="stat-card">
+      <div class="stat-icon stat-icon-light">📚</div>
+      <div>
+        <p class="stat-label">Courses</p>
+        <p class="stat-value">{{ total_courses }}</p>
+        <p class="stat-note">unique courses in use</p>
+      </div>
+    </article>
+
+    <article class="stat-card">
+      <div class="stat-icon stat-icon-light">📅</div>
+      <div>
+        <p class="stat-label">Year levels</p>
+        <p class="stat-value">{{ total_year_levels }}</p>
+        <p class="stat-note">year levels represented</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- Recently added students -->
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Recently added students</h2>
+      <a href="{{ url_for('students_page') }}" class="link">View all records →</a>
+    </div>
+
+    {% if recent_students %}
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Student ID</th>
+              <th>Full name</th>
+              <th>Course</th>
+              <th>Year level</th>
+              <th class="actions-col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for student in recent_students %}
+              <tr>
+                <td data-label="Student ID"><span class="id-badge">{{ student.student_id }}</span></td>
+                <td data-label="Full name">{{ student.full_name }}</td>
+                <td data-label="Course">{{ student.course }}</td>
+                <td data-label="Year level">{{ student.year_level }}</td>
+                <td data-label="Actions" class="actions-col">
+                  <a class="btn btn-ghost btn-small" href="{{ url_for('edit_student', student_id=student.student_id) }}">Edit</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <p class="empty-emoji">🎓</p>
+        <h3>No students yet</h3>
+        <p>Add your first student and their record will appear here.</p>
+        <a href="{{ url_for('add_student') }}" class="btn btn-primary">Add a student</a>
+      </div>
+    {% endif %}
+  </section>
+
+  <!-- Quick actions -->
+  <section class="quick-actions">
+    <a class="quick-card" href="{{ url_for('students_page') }}">
+      <span class="quick-icon">📋</span>
+      <span>
+        <strong>View all students</strong>
+        <small>Browse, search and edit records</small>
+      </span>
+    </a>
+    <a class="quick-card" href="{{ url_for('add_student') }}">
+      <span class="quick-icon">➕</span>
+      <span>
+        <strong>Add a new student</strong>
+        <small>Fill in the form to create a record</small>
+      </span>
+    </a>
+  </section>
+{% endblock %}

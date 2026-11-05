@@ -1,0 +1,15 @@
+# Render Blueprint: deploy this repo as a free Python web service.
+# In Render: New + > Blueprint, pick this repository, then Apply.
+services:
+  - type: web
+    name: student-management
+    runtime: python
+    plan: free
+    rootDir: student_management
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.3"
+      - key: SECRET_KEY
+        generateValue: true

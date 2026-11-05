@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Edit {{ student.full_name }} | Student Management System{% endblock %}
+
+{% block content %}
+  <section class="page-head">
+    <div>
+      <p class="eyebrow">Update record</p>
+      <h1>Edit student</h1>
+      <p class="page-subtitle">
+        Editing {{ student.full_name }} ({{ student.student_id }}). You can also correct the student ID if it was entered wrongly.
+      </p>
+    </div>
+    <a href="{{ url_for('students_page') }}" class="btn btn-ghost">← Back to students</a>
+  </section>
+
+  <section class="panel form-panel">
+    <form method="post" action="{{ url_for('edit_student', student_id=student.student_id) }}">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="student_id">Student ID</label>
+          <input
+            type="text"
+            id="student_id"
+            name="student_id"
+            value="{{ form.get('student_id', student.student_id) }}"
+            required
+          >
+          <p class="help-text">You can change this ID. It must stay unique (letters, numbers and dashes only).</p>
+        </div>
+
+        <div class="form-group">
+          <label for="full_name">Full name</label>
+          <input
+            type="text"
+            id="full_name"
+            name="full_name"
+            value="{{ form.get('full_name', '') }}"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="age">Age</label>
+          <input
+            type="number"
+            id="age"
+            name="age"
+            value="{{ form.get('age', '') }}"
+            min="10"
+            max="100"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="gender">Gender</label>
+          <select id="gender" name="gender" required>
+            {% for gender in genders %}
+              <option value="{{ gender }}" {% if form.get('gender') == gender %}selected{% endif %}>{{ gender }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="course">Course</label>
+          <input
+            type="text"
+            id="course"
+            name="course"
+            value="{{ form.get('course', '') }}"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="year_level">Year level</label>
+          <select id="year_level" name="year_level" required>
+            {% set current_level = form.get('year_level', '') %}
+            {% if current_level and current_level not in year_levels %}
+              <option value="{{ current_level }}" selected>{{ current_level }} (previous value - please choose a new one)</option>
+            {% endif %}
+            {% for level in year_levels %}
+              <option value="{{ level }}" {% if form.get('year_level') == level %}selected{% endif %}>{{ level }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group form-group-full">
+          <label for="email">Email address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value="{{ form.get('email', '') }}"
+            required
+          >
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save changes</button>
+        <a href="{{ url_for('students_page') }}" class="btn btn-ghost">Cancel</a>
+      </div>
+    </form>
+  </section>
+{% endblock %}
